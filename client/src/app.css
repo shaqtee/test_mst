@@ -1,0 +1,13 @@
+@tailwind base;
+html {
+  scroll-behavior: smooth;
+}
+
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .MS_customClass {
+    @apply bg-gradient-to-r from-blue-500 to-teal-400 bg-clip-text text-transparent;
+  }
+}
