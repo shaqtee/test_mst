@@ -3,9 +3,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 /* Routes */
 import authRoute from "./routes/auth.js";
-import hotelsRoute from "./routes/hotels.js";
 import usersRoute from "./routes/users.js";
-import roomsRoute from "./routes/rooms.js";
 import mailRoute from "./routes/mail.js";
 import uploadRoute from "./routes/upload.js";
 import mysqlRoute from "./routes/mysqlroute.js";
@@ -24,9 +22,7 @@ app.use(express.json());
 app.use(express.static("public")); // for images
 
 app.use("/api/auth", authRoute);
-app.use("/api/hotels", hotelsRoute);
 app.use("/api/users", usersRoute);
-app.use("/api/rooms", roomsRoute);
 app.use("/api/mail", mailRoute);
 app.use("/api/file", uploadRoute);
 app.use("/api/sql", mysqlRoute);
