@@ -3,17 +3,20 @@ import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 
 const Member = () => {
+  //window.location.replace("http://localhost:3000/admin");
   const auth = useLocation();
   const isLoggin = auth.state
     ? auth.state.role == 0 && auth.state.token === "active"
       ? true
       : false
     : false;
-  const isAuth = isLoggin ? auth.state : null;
-  console.log(isAuth);
+  const isAuth = isLoggin ? auth.state : history.back();
+  //console.log(isLoggin, isAuth, auth.state.role);
+
   const [image, setImage] = React.useState({
     uploaded: `http://localhost:8800/upload/${auth.state.photo}`,
   });
+
   const [msg, setMsg] = React.useState();
   useEffect(() => {
     const getId = async () => {
@@ -28,7 +31,6 @@ const Member = () => {
     };
     getId();
   }, [msg]);
-
   /* upload */
 
   const fileHandler = (e) => {
@@ -61,9 +63,10 @@ const Member = () => {
     }
   };
   /* endUpload */
+
   return (
     <div className="member">
-      {isLoggin ? (
+      {isLoggin && auth.state.role == 0 ? (
         <>
           <div className="navbar dark:bg-slate-800 rounded-b-lg">
             <div className="flex-1">

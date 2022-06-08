@@ -1,14 +1,68 @@
+import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import axios from "axios";
 
 const Admin = () => {
   const auth = useLocation();
+  console.log(auth);
   const isLoggin = auth.state
     ? auth.state.role == 1 && auth.state.token === "active"
       ? true
       : false
     : false;
-  const isAuth = isLoggin ? auth.state : null;
-  console.log(isLoggin, isAuth);
+  const isAuth = isLoggin ? auth.state : history.back();
+  //console.log(isLoggin, isAuth);
+  /* hapus */
+  const [image, setImage] = React.useState({
+    uploaded: `http://localhost:8800/upload/${auth.state.photo}`,
+  });
+
+  const [msg, setMsg] = React.useState();
+  useEffect(() => {
+    const getId = async () => {
+      try {
+        await axios.get(`/auth/find/${isAuth.id}`).then((res) => {
+          console.log(res);
+          setImage({
+            uploaded: `http://localhost:8800/upload/${res.data[0].photo}`,
+          });
+        });
+      } catch (error) {}
+    };
+    getId();
+  }, [msg]);
+  /* upload */
+
+  const fileHandler = (e) => {
+    console.log(e.target.files[0]);
+    let uploaded = URL.createObjectURL(e.target.files[0]);
+    setImage({ uploaded, isSave: e.target.files[0] });
+  };
+
+  const uploadImage = async () => {
+    if (!image.isSave) return alert("Please select an image");
+
+    let formData = new FormData();
+    formData.append("photo", image.isSave, image.isSave.name);
+    formData.append("data", [
+      auth.state.username,
+      auth.state.password,
+      auth.state.email,
+    ]);
+
+    try {
+      await axios.post("/file", formData).then((res) => {
+        console.log(res.data.imageURL);
+        setImage({ uploaded: res.data.imageURL });
+        setMsg(`${res.data.imageURL.split("/").pop()} uploaded`);
+      });
+    } catch (err) {
+      setImage({
+        uploaded: `http://localhost:8800/upload/${auth.state.photo}`,
+      });
+    }
+  };
+  /* endHapus */
   return (
     <div className="admin">
       {isLoggin ? (
@@ -58,7 +112,7 @@ const Admin = () => {
               <div className="dropdown dropdown-end">
                 <label tabIndex="0" className="btn btn-ghost btn-circle avatar">
                   <div className="w-10 rounded-full">
-                    <img src="https://api.lorem.space/image/face?hash=33791" />
+                    <img src={image.uploaded} />
                   </div>
                 </label>
                 <ul
@@ -85,6 +139,32 @@ const Admin = () => {
             <p className="text-8xl text-center">
               hi {auth.state.username}! <br /> ADMIN PAGE
             </p>
+            {/* photo */}
+            <div className="flex flex-col items-center">
+              <img
+                src={image.uploaded}
+                className="h-40 w-40 bg-[#bada55] overflow-y-scroll object-contain m-auto my-3"
+              />
+              <div className="m-auto">
+                <label className="input-group input-group-md">
+                  <span className="bg-neutral">MD</span>
+                  <input
+                    type="file"
+                    placeholder="Type here"
+                    className="input input-bordered input-md form-control pt-1"
+                    onChange={fileHandler}
+                  />
+                </label>
+              </div>
+              <button
+                className="btn btn-outline w-28 my-3"
+                onClick={uploadImage}
+              >
+                reUpload
+              </button>
+              <div className="m-auto">Nama : {auth.state.username}</div>
+              <div className="m-auto">Email : {auth.state.email}</div>
+            </div>
           </div>
         </>
       ) : (
