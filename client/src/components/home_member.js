@@ -110,7 +110,7 @@ const Member = () => {
               <div className="dropdown dropdown-end">
                 <label tabIndex="0" className="btn btn-ghost btn-circle avatar">
                   <div className="w-10 rounded-full">
-                    <img src="https://api.lorem.space/image/face?hash=33791" />
+                    <img src={image.uploaded} />
                   </div>
                 </label>
                 <ul

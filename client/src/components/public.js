@@ -183,16 +183,21 @@ const Home = (props) => {
         </pre>
         <pre data-prefix="6">
           <code>
-            <span className="text-green-500">✔</span> ready react-router-dom
+            <span className="text-green-500">✔</span> jsonwebtoken(jwt)
           </code>
         </pre>
         <pre data-prefix="7">
+          <code>
+            <span className="text-green-500">✔</span> ready react-router-dom
+          </code>
+        </pre>
+        <pre data-prefix="8">
           <code>
             <span className="text-green-500">✔</span> ready package.json (proxy
             8080)
           </code>
         </pre>
-        <pre data-prefix="8">
+        <pre data-prefix="9">
           <code>
             <span className="text-green-500">✔</span> ready tailwind.config.js
             (theme)
